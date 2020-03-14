@@ -80,13 +80,8 @@ namespace devMobile.IoT.Rfm9x.ReceiveInterrupt
 
             byte numberOfBytes = this.RegisterReadByte(0x13); // RegRxNbBytes
 
-            // Allocate buffer for message
-            byte[] messageBytes = new byte[numberOfBytes];
-
-            for (int i = 0; i < numberOfBytes; i++)
-            {
-               messageBytes[i] = this.RegisterReadByte(0x00); // RegFifo
-            }
+            // Get number of bytes in the message
+            byte[] messageBytes = this.RegisterRead(0x00, numberOfBytes);
 
             string messageText = UTF8Encoding.UTF8.GetString(messageBytes);
             Debug.WriteLine($"Received {messageBytes.Length} byte message {messageText}");
