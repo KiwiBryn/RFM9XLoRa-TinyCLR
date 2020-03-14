@@ -162,10 +162,7 @@ namespace devMobile.IoT.Rfm9x.TransmitBasic
                
             // load the message into the fifo
             byte[] messageBytes = UTF8Encoding.UTF8.GetBytes(messageText);
-            foreach (byte b in messageBytes)
-            {
-               rfm9XDevice.RegisterWriteByte(0x0, b); // RegFifo
-            }
+            rfm9XDevice.RegisterWrite(0x0, messageBytes); // RegFifo
 
             // Set the length of the message in the fifo
             rfm9XDevice.RegisterWriteByte(0x22, (byte)messageBytes.Length); // RegPayloadLength

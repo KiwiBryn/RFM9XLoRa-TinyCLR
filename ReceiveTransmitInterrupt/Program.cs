@@ -82,12 +82,7 @@ namespace devMobile.IoT.Rfm9x.ReceiveTransmitInterrupt
             byte numberOfBytes = this.RegisterReadByte(0x13); // RegRxNbBytes
 
             // Allocate buffer for message
-            byte[] messageBytes = new byte[numberOfBytes];
-
-            for (int i = 0; i < numberOfBytes; i++)
-            {
-               messageBytes[i] = this.RegisterReadByte(0x00); // RegFifo
-            }
+            byte[] messageBytes = this.RegisterRead(0X0, numberOfBytes);
 
             string messageText = UTF8Encoding.UTF8.GetString(messageBytes);
             Debug.WriteLine($"Received {messageBytes.Length} byte message {messageText}");
@@ -213,10 +208,7 @@ namespace devMobile.IoT.Rfm9x.ReceiveTransmitInterrupt
 
             // load the message into the fifo
             byte[] messageBytes = UTF8Encoding.UTF8.GetBytes(messageText);
-            foreach (byte b in messageBytes)
-            {
-               rfm9XDevice.RegisterWriteByte(0x0, b); // RegFifo 
-            }
+            rfm9XDevice.RegisterWrite(0x0, messageBytes); // RegFifo 
 
             // Set the length of the message in the fifo
             rfm9XDevice.RegisterWriteByte(0x22, (byte)messageBytes.Length); // RegPayloadLength
