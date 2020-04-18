@@ -38,9 +38,9 @@ namespace devMobile.IoT.Rfm9x.RegisterScan
             ChipSelectActiveState = false,
          };
 
-         SpiController spiCntroller = SpiController.FromName(FEZ.SpiBus.Spi1);
+         SpiController spiController = SpiController.FromName(FEZ.SpiBus.Spi1);
 
-         rfm9XLoraModem = spiCntroller.GetDevice(settings);
+         rfm9XLoraModem = spiController.GetDevice(settings);
       }
 
       public Byte RegisterReadByte(byte registerAddress)

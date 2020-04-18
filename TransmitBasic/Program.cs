@@ -42,9 +42,9 @@ namespace devMobile.IoT.Rfm9x.TransmitBasic
             ChipSelectActiveState = false,
          };
 
-         SpiController spiCntroller = SpiController.FromName(FEZ.SpiBus.Spi1);
+         SpiController spiController = SpiController.FromName(FEZ.SpiBus.Spi1);
 
-         rfm9XLoraModem = spiCntroller.GetDevice(settings);
+         rfm9XLoraModem = spiController.GetDevice(settings);
 
          // Factory reset pin configuration
          GpioController gpioController = GpioController.GetDefault();
@@ -150,6 +150,8 @@ namespace devMobile.IoT.Rfm9x.TransmitBasic
 
          // More power PA Boost
          rfm9XDevice.RegisterWriteByte(0x09, 0b10000000); // RegPaConfig
+
+         rfm9XDevice.RegisterDump();
 
          while (true)
          {
