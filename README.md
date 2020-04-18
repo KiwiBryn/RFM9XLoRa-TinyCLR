@@ -7,10 +7,10 @@ The repo has the source code for the series of blog posts written as I built thi
 01. [RegisterScan](https://blog.devmobile.co.nz/2020/03/13/tinyclr-os-lora-library-part2/)
 02. [RegisterReadAndWrite](https://blog.devmobile.co.nz/2020/03/14/tinyclr-os-lora-library-part3/)
 03. [TransmitBasic](https://blog.devmobile.co.nz/2020/03/14/tinyclr-os-lora-library-part4/)
-04. [ReceiveBasic](https://blog.devmobile.co.nz/)
-05. [ReceiveInterrupt](https://blog.devmobile.co.nz/)
-06. [TransmitInterrupt](https://blog.devmobile.co.nz/)
-07. [ReceiveTransmitInterrupt](https://blog.devmobile.co.nz/)
+04. [ReceiveBasic](https://blog.devmobile.co.nz/2020/03/15/tinyclr-os-lora-library-part5/)
+05. [ReceiveInterrupt](https://blog.devmobile.co.nz/2020/03/15/tinyclr-os-lora-library-part6/)
+06. [TransmitInterrupt](https://blog.devmobile.co.nz/2020/03/15/tinyclr-os-lora-library-part7/)
+07. [ReceiveTransmitInterrupt](https://blog.devmobile.co.nz/2020/03/16/tinyclr-os-lora-library-part8/)
 
 Fully featured driver and sample application
 * Rfm9xLoRaDeviceClient 
