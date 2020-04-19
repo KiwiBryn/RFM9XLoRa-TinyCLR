@@ -162,7 +162,7 @@ namespace devMobile.IoT.Rfm9x.RegisterReadAndWrite
             rfm9XDevice.RegisterWriteWord(0x20, 0x80);
 
             Debug.WriteLine("Read the center frequency (read byte array)");
-            byte[] frequencyReadBytes = rfm9XDevice.RegisterRead(0x06, 5);
+            byte[] frequencyReadBytes = rfm9XDevice.RegisterRead(0x06, 3);
             Debug.WriteLine($"Frequency Msb 0x{frequencyReadBytes[0]:x2} Mid 0x{frequencyReadBytes[1]:x2} Lsb 0x{frequencyReadBytes[2]:x2}");
 
             Debug.WriteLine("Set the center frequency to 916MHz (write byte array)");
