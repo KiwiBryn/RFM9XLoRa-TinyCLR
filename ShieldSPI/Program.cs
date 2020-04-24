@@ -30,20 +30,22 @@ namespace devMobile.IoT.Rfm9x.ShieldSpi
          var settings = new SpiConnectionSettings()
          {
             ChipSelectType = SpiChipSelectType.Gpio,
-            ChipSelectLine = FEZ.GpioPin.D10,
+            //ChipSelectLine = FEZ.GpioPin.D10,
+            ChipSelectLine = GHIElectronics.TinyCLR.Devices.Gpio.GpioController.GetDefault().OpenPin(SC20100.GpioPin.PA13), 
             Mode = SpiMode.Mode0,
             //Mode = SpiMode.Mode1,
             //Mode = SpiMode.Mode2,
             //Mode = SpiMode.Mode3,
             ClockFrequency = 500000,
-            DataBitLength = 8,
+            //DataBitLength = 8, Removed as part of TiyCLR V2 Upgrade
             //ChipSelectActiveState = true
             ChipSelectActiveState = false,
             //ChipSelectHoldTime = new TimeSpan(0, 0, 0, 0, 500),
             //ChipSelectSetupTime = new TimeSpan(0, 0, 0, 0, 500),
          };
 
-         var controller = SpiController.FromName(FEZ.SpiBus.Spi1);
+         //var controller = SpiController.FromName(FEZ.SpiBus.Spi1);
+         var controller = SpiController.FromName(SC20100.SpiBus.Spi3);
          var device = controller.GetDevice(settings);
 
          Thread.Sleep(500);
