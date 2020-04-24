@@ -19,28 +19,65 @@ namespace devMobile.IoT.Rfm9x.RegisterScan
    using System;
    using System.Diagnostics;
    using System.Threading;
+   using GHIElectronics.TinyCLR.Devices.Gpio;
    using GHIElectronics.TinyCLR.Devices.Spi;
    using GHIElectronics.TinyCLR.Pins;
 
-   public sealed class Rfm9XDevice
+   public class Rfm9XDevice:IDisposable
    {
-      private SpiDevice rfm9XLoraModem;
+      private bool disposed = false;
+      private GpioPin chipSelectGpio = null;
+      private SpiDevice rfm9XLoraModem = null;
 
-      public Rfm9XDevice(int chipSelectPin)
+      public Rfm9XDevice(string spiPortName, int chipSelectPin)
       {
+         chipSelectGpio = GpioController.GetDefault().OpenPin(chipSelectPin);
+
          var settings = new SpiConnectionSettings()
          {
             ChipSelectType = SpiChipSelectType.Gpio,
-            ChipSelectLine = chipSelectPin,
+            ChipSelectLine = chipSelectGpio,
             Mode = SpiMode.Mode0,
             ClockFrequency = 500000,
-            DataBitLength = 8,
             ChipSelectActiveState = false,
          };
 
-         SpiController spiController = SpiController.FromName(FEZ.SpiBus.Spi1);
+         SpiController spiController = SpiController.FromName(spiPortName);
 
          rfm9XLoraModem = spiController.GetDevice(settings);
+      }
+
+      public void Dispose()
+      {
+         Dispose(true);
+         GC.SuppressFinalize(this);
+      }
+
+      protected virtual void Dispose(bool disposing)
+      {
+         if (!this.disposed)
+         {
+            if (disposing)
+            {
+               if (rfm9XLoraModem != null)
+               {
+                  rfm9XLoraModem.Dispose();
+                  rfm9XLoraModem = null;
+               }
+               if (chipSelectGpio != null)
+               {
+                  chipSelectGpio.Dispose();
+                  chipSelectGpio = null;
+               }
+            }
+
+            this.disposed = true;
+         }
+      }
+
+      ~Rfm9XDevice()
+      {
+         Dispose(false);
       }
 
       public Byte RegisterReadByte(byte registerAddress)
@@ -59,7 +96,7 @@ namespace devMobile.IoT.Rfm9x.RegisterScan
    {
       static void Main()
       {
-         Rfm9XDevice rfm9XDevice = new Rfm9XDevice(FEZ.GpioPin.D10);
+         Rfm9XDevice rfm9XDevice = new Rfm9XDevice(SC20100.SpiBus.Spi3, SC20100.GpioPin.PA13);
 
          while (true)
          {
