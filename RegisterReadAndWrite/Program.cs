@@ -23,25 +23,28 @@ namespace devMobile.IoT.Rfm9x.RegisterReadAndWrite
    using GHIElectronics.TinyCLR.Devices.Spi;
    using GHIElectronics.TinyCLR.Pins;
 
-   public sealed class Rfm9XDevice
+   public class Rfm9XDevice:IDisposable
    {
-      private SpiDevice rfm9XLoraModem;
+      private bool disposed = false;
+      private GpioPin chipSelectGpio = null;
+      private SpiDevice rfm9XLoraModem = null;
       private const byte RegisterAddressReadMask = 0X7f;
       private const byte RegisterAddressWriteMask = 0x80;
 
-      public Rfm9XDevice(int chipSelectPin, int resetPin)
+      public Rfm9XDevice(string spiPortName, int chipSelectPin, int resetPin)
       {
+         chipSelectGpio = GpioController.GetDefault().OpenPin(chipSelectPin);
+
          var settings = new SpiConnectionSettings()
          {
             ChipSelectType = SpiChipSelectType.Gpio,
-            ChipSelectLine = chipSelectPin,
+            ChipSelectLine = chipSelectGpio,
             Mode = SpiMode.Mode0,
             ClockFrequency = 500000,
-            DataBitLength = 8,
             ChipSelectActiveState = false,
          };
 
-         SpiController spiController = SpiController.FromName(FEZ.SpiBus.Spi1);
+         SpiController spiController = SpiController.FromName(spiPortName);
 
          rfm9XLoraModem = spiController.GetDevice(settings);
 
@@ -53,6 +56,39 @@ namespace devMobile.IoT.Rfm9x.RegisterReadAndWrite
          Thread.Sleep(10);
          resetGpioPin.Write(GpioPinValue.High);
          Thread.Sleep(10);
+      }
+
+      public void Dispose()
+      {
+         Dispose(true);
+         GC.SuppressFinalize(this);
+      }
+
+      protected virtual void Dispose(bool disposing)
+      {
+         if (!this.disposed)
+         {
+            if (disposing)
+            {
+               if (rfm9XLoraModem != null)
+               {
+                  rfm9XLoraModem.Dispose();
+                  rfm9XLoraModem = null;
+               }
+               if (chipSelectGpio != null)
+               {
+                  chipSelectGpio.Dispose();
+                  chipSelectGpio = null;
+               }
+            }
+
+            this.disposed = true;
+         }
+      }
+
+      ~Rfm9XDevice()
+      {
+         Dispose(false);
       }
 
       public Byte RegisterReadByte(byte registerAddress)
@@ -137,7 +173,7 @@ namespace devMobile.IoT.Rfm9x.RegisterReadAndWrite
    {
       static void Main()
       {
-         Rfm9XDevice rfm9XDevice = new Rfm9XDevice(FEZ.GpioPin.D10, FEZ.GpioPin.D9);
+         Rfm9XDevice rfm9XDevice = new Rfm9XDevice(SC20100.SpiBus.Spi3, SC20100.GpioPin.PA13, SC20100.GpioPin.PA14);
 
          rfm9XDevice.RegisterDump();
 
@@ -165,7 +201,7 @@ namespace devMobile.IoT.Rfm9x.RegisterReadAndWrite
             byte[] frequencyReadBytes = rfm9XDevice.RegisterRead(0x06, 3);
             Debug.WriteLine($"Frequency Msb 0x{frequencyReadBytes[0]:x2} Mid 0x{frequencyReadBytes[1]:x2} Lsb 0x{frequencyReadBytes[2]:x2}");
 
-            Debug.WriteLine("Set the center frequency to 916MHz (write byte array)");
+            Debug.WriteLine("Set the center frequency to 915MHz (write byte array)");
             byte[] frequencyWriteBytes = { 0xE4, 0xC0, 0x00 };
             rfm9XDevice.RegisterWrite(0x06, frequencyWriteBytes);
 
