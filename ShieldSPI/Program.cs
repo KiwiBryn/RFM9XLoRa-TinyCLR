@@ -1,5 +1,5 @@
 ﻿//---------------------------------------------------------------------------------
-// Copyright (c) March 2020, devMobile Software
+// Copyright (c) March/April 2020, devMobile Software
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -74,8 +74,9 @@ namespace devMobile.IoT.Rfm9x.ShieldSpi
             //register |= 0x80;
 
             //writeBuffer = new byte[] { register };
-            writeBuffer = new byte[] { register,  0x0 };
-            //writeBuffer = new byte[] { register, register, 0x0 };
+            writeBuffer = new byte[] { register, 0x0 };
+            //writeBuffer = new byte[] {register, 0x0, 0x0};
+            //writeBuffer = new byte[] {register, 0x0, 0x0, 0x0};
 
             readBuffer = new byte[writeBuffer.Length];
 
@@ -92,20 +93,13 @@ namespace devMobile.IoT.Rfm9x.ShieldSpi
       {
          string hexString = string.Empty;
 
-         // Create a character array for hexidecimal conversion.
-         const string hexChars = "0123456789ABCDEF";
-
          // Loop through the bytes.
          for (byte b = 0; b < bytes.Length; b++)
          {
             if (b > 0)
                hexString += "-";
 
-            // Grab the top 4 bits and append the hex equivalent to the return string.        
-            hexString += hexChars[bytes[b] >> 4];
-
-            // Mask off the upper 4 bits to get the rest of it.
-            hexString += hexChars[bytes[b] & 0x0F];
+            hexString += bytes[b].ToString("x2");
          }
 
          return hexString;
