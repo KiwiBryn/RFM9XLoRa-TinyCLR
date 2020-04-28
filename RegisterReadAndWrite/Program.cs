@@ -23,17 +23,17 @@ namespace devMobile.IoT.Rfm9x.RegisterReadAndWrite
    using GHIElectronics.TinyCLR.Devices.Spi;
    using GHIElectronics.TinyCLR.Pins;
 
-   public class Rfm9XDevice:IDisposable
+   public sealed class Rfm9XDevice
    {
-      private bool disposed = false;
-      private GpioPin chipSelectGpio = null;
       private SpiDevice rfm9XLoraModem = null;
       private const byte RegisterAddressReadMask = 0X7f;
       private const byte RegisterAddressWriteMask = 0x80;
 
       public Rfm9XDevice(string spiPortName, int chipSelectPin, int resetPin)
       {
-         chipSelectGpio = GpioController.GetDefault().OpenPin(chipSelectPin);
+         GpioController gpioController = GpioController.GetDefault();
+
+         GpioPin chipSelectGpio = gpioController.OpenPin(chipSelectPin);
 
          var settings = new SpiConnectionSettings()
          {
@@ -49,46 +49,12 @@ namespace devMobile.IoT.Rfm9x.RegisterReadAndWrite
          rfm9XLoraModem = spiController.GetDevice(settings);
 
          // Factory reset pin configuration
-         GpioController gpioController = GpioController.GetDefault();
          GpioPin resetGpioPin = gpioController.OpenPin(resetPin);
          resetGpioPin.SetDriveMode(GpioPinDriveMode.Output);
          resetGpioPin.Write(GpioPinValue.Low);
          Thread.Sleep(10);
          resetGpioPin.Write(GpioPinValue.High);
          Thread.Sleep(10);
-      }
-
-      public void Dispose()
-      {
-         Dispose(true);
-         GC.SuppressFinalize(this);
-      }
-
-      protected virtual void Dispose(bool disposing)
-      {
-         if (!this.disposed)
-         {
-            if (disposing)
-            {
-               if (rfm9XLoraModem != null)
-               {
-                  rfm9XLoraModem.Dispose();
-                  rfm9XLoraModem = null;
-               }
-               if (chipSelectGpio != null)
-               {
-                  chipSelectGpio.Dispose();
-                  chipSelectGpio = null;
-               }
-            }
-
-            this.disposed = true;
-         }
-      }
-
-      ~Rfm9XDevice()
-      {
-         Dispose(false);
       }
 
       public Byte RegisterReadByte(byte registerAddress)
