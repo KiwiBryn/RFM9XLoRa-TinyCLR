@@ -12,11 +12,11 @@ The repo has the source code for the series of blog posts written as I built thi
 06. [Transmit Interrupt](https://blog.devmobile.co.nz/2020/03/15/tinyclr-os-lora-library-part7/)
 07. [Receive & Transmit Interrupt](https://blog.devmobile.co.nz/2020/03/16/tinyclr-os-lora-library-part8/)
 
-Fully featured V1 driver and sample application
-* Rfm9xLoRaDeviceClient 
+[Fully featured V1 driver and sample application](https://blog.devmobile.co.nz/2020/03/16/rfm9x-tinyclr-on-github/) 
+* Rfm9xLoRaDeviceClient
 * Rfm9XLoRaDevice
 
-Shield from [@Dragino](http://www.dragino.com/products/lora/item/102-lora-shield.html)
+The V1 device uses an [Arduino](https://www.arduino.cc/) shield from [Dragino](http://www.dragino.com/products/lora/item/102-lora-shield.html)
 
 ![LoRa Shield on FEZT18-N](DeviceV2.jpg)
 
@@ -29,6 +29,6 @@ Fully featured V2 driver and sample application
 * Rfm9xLoRaDeviceClient 
 * Rfm9XLoRaDevice
 
-Shield from [@Dragino](http://www.dragino.com/products/lora/item/102-lora-shield.html)
+The V2 device uses an [Arduino](https://www.arduino.cc/) shield from [Dragino](http://www.dragino.com/products/lora/item/102-lora-shield.html) as I was unable to source a sutiable MikroBus click.(April 2020)
 
 ![LoRa Shield on SC20100](SC20100DraginoTinyCLRV2.jpg)
