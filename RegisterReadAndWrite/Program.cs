@@ -1,5 +1,5 @@
 ﻿//---------------------------------------------------------------------------------
-// Copyright (c) March 2020, devMobile Software
+// Copyright (c) March/April 2020, devMobile Software
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -117,16 +117,16 @@ namespace devMobile.IoT.Rfm9x.RegisterReadAndWrite
       {
          byte[] writeBuffer = new byte[length + 1];
          byte[] readBuffer = new byte[length + 1];
-         byte[] repyBuffer = new byte[length];
+         byte[] replyBuffer = new byte[length];
          Debug.Assert(rfm9XLoraModem != null);
 
          writeBuffer[0] = address &= RegisterAddressReadMask;
 
          rfm9XLoraModem.TransferFullDuplex(writeBuffer, readBuffer);
 
-         Array.Copy(readBuffer, 1, repyBuffer, 0, length);
+         Array.Copy(readBuffer, 1, replyBuffer, 0, length);
 
-         return repyBuffer;
+         return replyBuffer;
       }
 
       public void RegisterWriteByte(byte address, byte value)
@@ -159,6 +159,8 @@ namespace devMobile.IoT.Rfm9x.RegisterReadAndWrite
 
       public void RegisterDump()
       {
+         Debug.Assert(rfm9XLoraModem != null);
+
          Debug.WriteLine("Register dump");
          for (byte registerIndex = 0; registerIndex <= 0x42; registerIndex++)
          {
