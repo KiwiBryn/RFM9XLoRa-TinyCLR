@@ -23,15 +23,13 @@ namespace devMobile.IoT.Rfm9x.RegisterScan
    using GHIElectronics.TinyCLR.Devices.Spi;
    using GHIElectronics.TinyCLR.Pins;
 
-   public class Rfm9XDevice:IDisposable
+   public sealed class Rfm9XDevice
    {
-      private bool disposed = false;
-      private GpioPin chipSelectGpio = null;
       private SpiDevice rfm9XLoraModem = null;
 
       public Rfm9XDevice(string spiPortName, int chipSelectPin)
       {
-         chipSelectGpio = GpioController.GetDefault().OpenPin(chipSelectPin);
+         GpioPin chipSelectGpio = GpioController.GetDefault().OpenPin(chipSelectPin);
 
          var settings = new SpiConnectionSettings()
          {
@@ -45,39 +43,6 @@ namespace devMobile.IoT.Rfm9x.RegisterScan
          SpiController spiController = SpiController.FromName(spiPortName);
 
          rfm9XLoraModem = spiController.GetDevice(settings);
-      }
-
-      public void Dispose()
-      {
-         Dispose(true);
-         GC.SuppressFinalize(this);
-      }
-
-      protected virtual void Dispose(bool disposing)
-      {
-         if (!this.disposed)
-         {
-            if (disposing)
-            {
-               if (rfm9XLoraModem != null)
-               {
-                  rfm9XLoraModem.Dispose();
-                  rfm9XLoraModem = null;
-               }
-               if (chipSelectGpio != null)
-               {
-                  chipSelectGpio.Dispose();
-                  chipSelectGpio = null;
-               }
-            }
-
-            this.disposed = true;
-         }
-      }
-
-      ~Rfm9XDevice()
-      {
-         Dispose(false);
       }
 
       public Byte RegisterReadByte(byte registerAddress)
