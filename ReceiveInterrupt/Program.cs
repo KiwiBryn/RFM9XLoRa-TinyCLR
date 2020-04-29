@@ -31,24 +31,26 @@ namespace devMobile.IoT.Rfm9x.ReceiveInterrupt
       private const byte RegisterAddressReadMask = 0X7f;
       private const byte RegisterAddressWriteMask = 0x80;
 
-      public Rfm9XDevice(int chipSelectPin, int resetPin, int interruptPin)
+      public Rfm9XDevice(string spiPortName, int chipSelectPin, int resetPin, int interruptPin)
       {
+         GpioController gpioController = GpioController.GetDefault();
+
+         GpioPin chipSelectGpio = gpioController.OpenPin(chipSelectPin);
+
          var settings = new SpiConnectionSettings()
          {
             ChipSelectType = SpiChipSelectType.Gpio,
-            ChipSelectLine = chipSelectPin,
+            ChipSelectLine = chipSelectGpio,
             Mode = SpiMode.Mode0,
             ClockFrequency = 500000,
-            DataBitLength = 8,
             ChipSelectActiveState = false,
          };
 
-         SpiController spiController = SpiController.FromName(FEZ.SpiBus.Spi1);
+         SpiController spiController = SpiController.FromName(spiPortName);
 
          rfm9XLoraModem = spiController.GetDevice(settings);
 
          // Factory reset pin configuration
-         GpioController gpioController = GpioController.GetDefault();
          GpioPin resetGpioPin = gpioController.OpenPin(resetPin);
          resetGpioPin.SetDriveMode(GpioPinDriveMode.Output);
          resetGpioPin.Write(GpioPinValue.Low);
@@ -58,7 +60,7 @@ namespace devMobile.IoT.Rfm9x.ReceiveInterrupt
 
          // Interrupt pin for RX message & TX done notification 
          InterruptGpioPin = gpioController.OpenPin(interruptPin);
-         resetGpioPin.SetDriveMode(GpioPinDriveMode.Input);
+         InterruptGpioPin.SetDriveMode(GpioPinDriveMode.Input);
 
          InterruptGpioPin.ValueChanged += InterruptGpioPin_ValueChanged;
       }
@@ -116,16 +118,16 @@ namespace devMobile.IoT.Rfm9x.ReceiveInterrupt
       {
          byte[] writeBuffer = new byte[length + 1];
          byte[] readBuffer = new byte[length + 1];
-         byte[] repyBuffer = new byte[length];
+         byte[] replyBuffer = new byte[length];
          Debug.Assert(rfm9XLoraModem != null);
 
          writeBuffer[0] = address &= RegisterAddressReadMask;
 
          rfm9XLoraModem.TransferFullDuplex(writeBuffer, readBuffer);
 
-         Array.Copy(readBuffer, 1, repyBuffer, 0, length);
+         Array.Copy(readBuffer, 1, replyBuffer, 0, length);
 
-         return repyBuffer;
+         return replyBuffer;
       }
 
       public void RegisterWriteByte(byte address, byte value)
@@ -172,7 +174,7 @@ namespace devMobile.IoT.Rfm9x.ReceiveInterrupt
    {
       static void Main()
       {
-         Rfm9XDevice rfm9XDevice = new Rfm9XDevice(FEZ.GpioPin.D10, FEZ.GpioPin.D9, FEZ.GpioPin.D2);
+         Rfm9XDevice rfm9XDevice = new Rfm9XDevice(SC20100.SpiBus.Spi3, SC20100.GpioPin.PA13, SC20100.GpioPin.PA14, SC20100.GpioPin.PE4);
 
          // Put device into LoRa + Sleep mode
          rfm9XDevice.RegisterWriteByte(0x01, 0b10000000); // RegOpMode 
