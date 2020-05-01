@@ -29,6 +29,6 @@ Fully featured V2 driver and sample application
 * Rfm9xLoRaDeviceClient 
 * Rfm9XLoRaDevice
 
-The V2 device uses an [Arduino](https://www.arduino.cc/) shield from [Dragino](http://www.dragino.com/products/lora/item/102-lora-shield.html) as I was unable to source a sutiable MikroBus click.(April 2020)
+The V2 device uses an [Arduino](https://www.arduino.cc/) shield from [Dragino](http://www.dragino.com/products/lora/item/102-lora-shield.html) as I was unable to source a suitable MikroBus click.(April 2020)
 
 ![LoRa Shield on SC20100](SC20100DraginoTinyCLRV2.jpg)
