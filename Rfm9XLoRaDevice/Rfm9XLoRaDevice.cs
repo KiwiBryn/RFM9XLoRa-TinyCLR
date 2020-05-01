@@ -1,5 +1,5 @@
 ﻿//---------------------------------------------------------------------------------
-// Copyright (c) March 20s0, devMobile Software
+// Copyright (c) March/April 20s0, devMobile Software
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -374,10 +374,9 @@ namespace devMobile.IoT.Rfm9x
 		private byte[] DeviceAddress = null;
 #endif
 
-		// Constructor for RPI shields with chip select connected to CS0/CS1 e.g. Elecrow/Electronic tricks
-		public Rfm9XDevice(int chipSelectPin, int resetPinNumber, int interruptPinNumber)
+		public Rfm9XDevice(string spiPortName, int chipSelectPin, int resetPinNumber, int interruptPinNumber)
 		{
-			RegisterManager = new RegisterManager(chipSelectPin);
+			RegisterManager = new RegisterManager(spiPortName, chipSelectPin);
 
 			// Check that SX127X chip is present
 			Byte regVersionValue = RegisterManager.ReadByte((byte)Registers.RegVersion);
@@ -447,15 +446,11 @@ namespace devMobile.IoT.Rfm9x
 			RxDoneIgnoreIfCrcMissing = rxDoneignoreIfCrcMissing;
 			RxDoneIgnoreIfCrcInvalid = rxDoneignoreIfCrcInvalid;
 
-			// If the HopeRF module doesn't have the reset pin connected (e.g. uputronics) not point in resetting it
-			if (ResetGpioPin != null)
-			{
-				// Strobe Reset pin briefly to factory reset SX127X chip
-				ResetGpioPin.Write(GpioPinValue.Low);
-				Thread.Sleep(10);
-				ResetGpioPin.Write(GpioPinValue.High);
-				Thread.Sleep(10);
-			}
+			// Strobe Reset pin briefly to factory reset SX127X chip
+			ResetGpioPin.Write(GpioPinValue.Low);
+			Thread.Sleep(10);
+			ResetGpioPin.Write(GpioPinValue.High);
+			Thread.Sleep(10);
 
 			// Put the device into sleep mode so registers can be changed
 			SetMode(RegOpModeMode.Sleep);

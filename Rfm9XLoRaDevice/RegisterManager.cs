@@ -1,5 +1,5 @@
 ﻿//---------------------------------------------------------------------------------
-// Copyright (c) March 2020, devMobile Software
+// Copyright (c) March/April 2020, devMobile Software
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ namespace devMobile.IoT.Rfm9x
 	using System.Diagnostics;
 	using GHIElectronics.TinyCLR.Devices.Gpio;
 	using GHIElectronics.TinyCLR.Devices.Spi;
-	using GHIElectronics.TinyCLR.Pins;
 
 	public sealed class RegisterManager
 	{
@@ -28,19 +27,20 @@ namespace devMobile.IoT.Rfm9x
 		private const byte RegisterAddressReadMask = 0X7f;
 		private const byte RegisterAddressWriteMask = 0x80;
 
-		public RegisterManager(int chipSelectPin)
+		public RegisterManager(string spiPortName,  int chipSelectPin, int clockFrequency = 500000)
 		{
+			GpioPin chipSelectGpio = GpioController.GetDefault().OpenPin(chipSelectPin);
+
 			var settings = new SpiConnectionSettings()
 			{
 				ChipSelectType = SpiChipSelectType.Gpio,
-				ChipSelectLine = chipSelectPin,
+				ChipSelectLine = chipSelectGpio,
 				Mode = SpiMode.Mode0,
-				ClockFrequency = 500000,
-				DataBitLength = 8,
+				ClockFrequency = clockFrequency,
 				ChipSelectActiveState = false,
 			};
 
-			SpiController spiController = SpiController.FromName(FEZ.SpiBus.Spi1);
+			SpiController spiController = SpiController.FromName(spiPortName);
 
 			rfm9XLoraModem = spiController.GetDevice(settings);
 		}
@@ -71,16 +71,16 @@ namespace devMobile.IoT.Rfm9x
 		{
 			byte[] writeBuffer = new byte[length + 1];
 			byte[] readBuffer = new byte[length + 1];
-			byte[] repyBuffer = new byte[length];
+			byte[] replyBuffer = new byte[length];
 			Debug.Assert(rfm9XLoraModem != null);
 
 			writeBuffer[0] = address &= RegisterAddressReadMask;
 
 			rfm9XLoraModem.TransferFullDuplex(writeBuffer, readBuffer);
 
-			Array.Copy(readBuffer, 1, repyBuffer, 0, length);
+			Array.Copy(readBuffer, 1, replyBuffer, 0, length);
 
-			return repyBuffer;
+			return replyBuffer;
 		}
 
 		public void WriteByte(byte address, byte value)

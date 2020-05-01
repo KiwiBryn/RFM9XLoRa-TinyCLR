@@ -1,5 +1,5 @@
 ﻿//---------------------------------------------------------------------------------
-// Copyright (c) March 2020, devMobile Software
+// Copyright (c) March/April 2020, devMobile Software
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ namespace devMobile.IoT.Rfm9x.LoRaDeviceClient
    {
       static void Main()
       {
-			//const string DeviceName = "FEZLoRa";
+			//const string DeviceName = "SC20100LoRa";
 			//const string HostName = "LoRaIoT1";
 			const string DeviceName = "LoRaIoT1";
 #if ADDRESSED_MESSAGES_PAYLOAD
@@ -37,7 +37,7 @@ namespace devMobile.IoT.Rfm9x.LoRaDeviceClient
 #endif
 			const double Frequency = 915000000.0;
 			byte MessageCount = System.Byte.MaxValue;
-			Rfm9XDevice rfm9XDevice = new Rfm9XDevice(FEZ.GpioPin.D10, FEZ.GpioPin.D9, FEZ.GpioPin.D2);
+			Rfm9XDevice rfm9XDevice = new Rfm9XDevice(SC20100.SpiBus.Spi3, SC20100.GpioPin.PA13, SC20100.GpioPin.PA14, SC20100.GpioPin.PE4);
 
 			rfm9XDevice.Initialise(Frequency, paBoost: true, rxPayloadCrcOn: true);
 #if DEBUG
