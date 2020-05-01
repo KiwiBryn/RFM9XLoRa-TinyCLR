@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Rfm9XLoRaDevice")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("devMobile Software LoRa Library for RFM9X")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("devMobile Software")]
 [assembly: AssemblyProduct("Rfm9XLoRaDevice")]
