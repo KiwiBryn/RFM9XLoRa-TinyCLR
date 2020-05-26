@@ -21,9 +21,10 @@ The V1 device uses an [Arduino](https://www.arduino.cc/) shield from [Dragino](h
 ![LoRa Shield on FEZT18-N](DeviceV2.jpg)
 
 00. [ShieldSPI](https://blog.devmobile.co.nz/2020/04/26/tinyclr-os-v2-lora-library-part1/)
-01. [Register Scan, Read & Write]()
-02. [Transmit & Receive Basic]()
-03. [Transmit & Receive Interrupt]()
+01. [Register Scan, Read & Write](https://blog.devmobile.co.nz/2020/04/28/tinyclr-os-v2-lora-library-part2/)
+02. [Transmit & Receive Basic](https://blog.devmobile.co.nz/2020/04/29/tinyclr-os-v2-lora-library-part3/
+)
+03. [Transmit & Receive Interrupt](https://blog.devmobile.co.nz/2020/04/30/tinyclr-os-v2-lora-library-part4/)
 
 Fully featured V2 driver and sample application
 * Rfm9xLoRaDeviceClient 
