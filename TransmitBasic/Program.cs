@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+// Need one of TINYCLR_V2_SC20100DEV/TINYCLR_V2_FEZDUINO defined
 //---------------------------------------------------------------------------------
 namespace devMobile.IoT.Rfm9x.TransmitBasic
 {
@@ -26,7 +27,7 @@ namespace devMobile.IoT.Rfm9x.TransmitBasic
 
    public sealed class Rfm9XDevice
    {
-      private SpiDevice rfm9XLoraModem;
+      private readonly SpiDevice rfm9XLoraModem;
       private const byte RegisterAddressReadMask = 0X7f;
       private const byte RegisterAddressWriteMask = 0x80;
 
@@ -140,8 +141,12 @@ namespace devMobile.IoT.Rfm9x.TransmitBasic
    {
       static void Main()
       {
+#if TINYCLR_V2_SC20100DEV
          Rfm9XDevice rfm9XDevice = new Rfm9XDevice(SC20100.SpiBus.Spi3, SC20100.GpioPin.PA13, SC20100.GpioPin.PA14);
-
+#endif
+#if TINYCLR_V2_FEZDUINO
+         Rfm9XDevice rfm9XDevice = new Rfm9XDevice(SC20100.SpiBus.Spi6, SC20100.GpioPin.PB1, SC20100.GpioPin.PA15);
+#endif
          int SendCount = 0;
 
          // Put device into LoRa + Sleep mode
