@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+// Need one of TINYCLR_V2_SC20100DEV/TINYCLR_V2_FEZDUINO defined
 //---------------------------------------------------------------------------------
 namespace devMobile.IoT.Rfm9x.RegisterScan
 {
@@ -25,7 +26,7 @@ namespace devMobile.IoT.Rfm9x.RegisterScan
 
    public sealed class Rfm9XDevice
    {
-      private SpiDevice rfm9XLoraModem = null;
+      private readonly SpiDevice rfm9XLoraModem = null;
 
       public Rfm9XDevice(string spiPortName, int chipSelectPin)
       {
@@ -61,7 +62,12 @@ namespace devMobile.IoT.Rfm9x.RegisterScan
    {
       static void Main()
       {
+#if TINYCLR_V2_SC20100DEV
          Rfm9XDevice rfm9XDevice = new Rfm9XDevice(SC20100.SpiBus.Spi3, SC20100.GpioPin.PA13);
+#endif
+#if TINYCLR_V2_FEZDUINO
+         Rfm9XDevice rfm9XDevice = new Rfm9XDevice(SC20100.SpiBus.Spi6, SC20100.GpioPin.PB1);
+#endif
 
          while (true)
          {
