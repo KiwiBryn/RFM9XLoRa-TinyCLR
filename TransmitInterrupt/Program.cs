@@ -45,6 +45,11 @@ namespace devMobile.IoT.Rfm9x.TransmitInterrupt
             Mode = SpiMode.Mode0,
             ClockFrequency = 500000,
             ChipSelectActiveState = false,
+            //ChipSelectHoldTime = new TimeSpan(50),
+            //ChipSelectHoldTime = new TimeSpan(25),
+            //ChipSelectHoldTime = new TimeSpan(10),
+            ChipSelectHoldTime = new TimeSpan(5),
+            //ChipSelectHoldTime = new TimeSpan(1),
          };
 
          SpiController spiController = SpiController.FromName(spiPortName);
