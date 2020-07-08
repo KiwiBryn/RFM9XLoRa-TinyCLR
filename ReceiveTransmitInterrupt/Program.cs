@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+// Need one of TINYCLR_V2_SC20100DEV/TINYCLR_V2_FEZDUINO defined
 //---------------------------------------------------------------------------------
 namespace devMobile.IoT.Rfm9x.ReceiveTransmitInterrupt
 {
@@ -26,8 +27,8 @@ namespace devMobile.IoT.Rfm9x.ReceiveTransmitInterrupt
 
    public sealed class Rfm9XDevice
    {
-      private SpiDevice rfm9XLoraModem;
-      private GpioPin InterruptGpioPin = null;
+      private readonly SpiDevice rfm9XLoraModem;
+      private readonly GpioPin InterruptGpioPin = null;
       private const byte RegisterAddressReadMask = 0X7f;
       private const byte RegisterAddressWriteMask = 0x80;
 
@@ -44,6 +45,7 @@ namespace devMobile.IoT.Rfm9x.ReceiveTransmitInterrupt
             Mode = SpiMode.Mode0,
             ClockFrequency = 500000,
             ChipSelectActiveState = false,
+            ChipSelectHoldTime = new TimeSpan(5),
          };
 
          SpiController spiController = SpiController.FromName(spiPortName);
@@ -182,7 +184,12 @@ namespace devMobile.IoT.Rfm9x.ReceiveTransmitInterrupt
    {
       static void Main()
       {
+#if TINYCLR_V2_SC20100DEV
          Rfm9XDevice rfm9XDevice = new Rfm9XDevice(SC20100.SpiBus.Spi3, SC20100.GpioPin.PA13, SC20100.GpioPin.PA14, SC20100.GpioPin.PE4);
+#endif
+#if TINYCLR_V2_FEZDUINO
+         Rfm9XDevice rfm9XDevice = new Rfm9XDevice(SC20100.SpiBus.Spi6, SC20100.GpioPin.PB1, SC20100.GpioPin.PA15, SC20100.GpioPin.PA1);
+#endif
          int sendCount = 0;
 
          // Put device into LoRa + Sleep mode
