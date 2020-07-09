@@ -79,11 +79,11 @@ namespace devMobile.IoT.Rfm9x.TransmitInterrupt
          }
 
          byte irqFlags = this.RegisterReadByte(0x12); // RegIrqFlags
-         Debug.WriteLine($"RegIrqFlags 0X{irqFlags:x2}");
+         Debug.WriteLine($"{DateTime.UtcNow:HH:mm:ss.fff} RegIrqFlags 0X{irqFlags:x2}");
 
          if ((irqFlags & 0b00001000) == 0b00001000)  // TxDone
          {
-            Debug.WriteLine("Transmit-Done");
+            Debug.WriteLine($"{DateTime.UtcNow:HH:mm:ss.fff} Transmit-Done");
          }
 
          this.RegisterWriteByte(0x12, 0xff);// RegIrqFlags
@@ -211,7 +211,7 @@ namespace devMobile.IoT.Rfm9x.TransmitInterrupt
 
             // Set the length of the message in the fifo
             rfm9XDevice.RegisterWriteByte(0x22, (byte)messageBytes.Length); // RegPayloadLength
-            Debug.WriteLine($"Sending {messageBytes.Length} bytes message {messageText}");
+            Debug.WriteLine($"{DateTime.UtcNow:HH:mm:ss.fff} Sending {messageBytes.Length} bytes message {messageText}");
             rfm9XDevice.RegisterWriteByte(0x01, 0b10000011); // RegOpMode 
 
             Thread.Sleep(10000);
