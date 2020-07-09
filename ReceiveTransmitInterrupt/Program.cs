@@ -45,7 +45,6 @@ namespace devMobile.IoT.Rfm9x.ReceiveTransmitInterrupt
             Mode = SpiMode.Mode0,
             ClockFrequency = 500000,
             ChipSelectActiveState = false,
-            ChipSelectHoldTime = new TimeSpan(5),
          };
 
          SpiController spiController = SpiController.FromName(spiPortName);
@@ -143,29 +142,32 @@ namespace devMobile.IoT.Rfm9x.ReceiveTransmitInterrupt
       public void RegisterWriteByte(byte address, byte value)
       {
          byte[] writeBuffer = new byte[] { address |= RegisterAddressWriteMask, value };
+         byte[] readBuffer = new byte[writeBuffer.Length];
          Debug.Assert(rfm9XLoraModem != null);
 
-         rfm9XLoraModem.Write(writeBuffer);
+         rfm9XLoraModem.TransferFullDuplex(writeBuffer, readBuffer);
       }
 
       public void RegisterWriteWord(byte address, ushort value)
       {
          byte[] valueBytes = BitConverter.GetBytes(value);
          byte[] writeBuffer = new byte[] { address |= RegisterAddressWriteMask, valueBytes[0], valueBytes[1] };
+         byte[] readBuffer = new byte[writeBuffer.Length];
          Debug.Assert(rfm9XLoraModem != null);
 
-         rfm9XLoraModem.Write(writeBuffer);
+         rfm9XLoraModem.TransferFullDuplex(writeBuffer, readBuffer);
       }
 
       public void RegisterWrite(byte address, byte[] bytes)
       {
          byte[] writeBuffer = new byte[1 + bytes.Length];
+         byte[] readBuffer = new byte[writeBuffer.Length];
          Debug.Assert(rfm9XLoraModem != null);
 
          Array.Copy(bytes, 0, writeBuffer, 1, bytes.Length);
          writeBuffer[0] = address |= RegisterAddressWriteMask;
 
-         rfm9XLoraModem.Write(writeBuffer);
+         rfm9XLoraModem.TransferFullDuplex(writeBuffer, readBuffer);
       }
 
       public void RegisterDump()

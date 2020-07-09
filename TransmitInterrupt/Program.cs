@@ -48,7 +48,7 @@ namespace devMobile.IoT.Rfm9x.TransmitInterrupt
             //ChipSelectHoldTime = new TimeSpan(50),
             //ChipSelectHoldTime = new TimeSpan(25),
             //ChipSelectHoldTime = new TimeSpan(10),
-            ChipSelectHoldTime = new TimeSpan(5),
+            //ChipSelectHoldTime = new TimeSpan(5),
             //ChipSelectHoldTime = new TimeSpan(1),
          };
 
@@ -130,29 +130,32 @@ namespace devMobile.IoT.Rfm9x.TransmitInterrupt
       public void RegisterWriteByte(byte address, byte value)
       {
          byte[] writeBuffer = new byte[] { address |= RegisterAddressWriteMask, value };
+         byte[] readBuffer = new byte[writeBuffer.Length];
          Debug.Assert(rfm9XLoraModem != null);
 
-         rfm9XLoraModem.Write(writeBuffer);
+         rfm9XLoraModem.TransferFullDuplex(writeBuffer, readBuffer);
       }
 
       public void RegisterWriteWord(byte address, ushort value)
       {
          byte[] valueBytes = BitConverter.GetBytes(value);
          byte[] writeBuffer = new byte[] { address |= RegisterAddressWriteMask, valueBytes[0], valueBytes[1] };
+         byte[] readBuffer = new byte[writeBuffer.Length];
          Debug.Assert(rfm9XLoraModem != null);
 
-         rfm9XLoraModem.Write(writeBuffer);
+         rfm9XLoraModem.TransferFullDuplex(writeBuffer, readBuffer);
       }
 
       public void RegisterWrite(byte address, byte[] bytes)
       {
          byte[] writeBuffer = new byte[1 + bytes.Length];
+         byte[] readBuffer = new byte[writeBuffer.Length];
          Debug.Assert(rfm9XLoraModem != null);
 
          Array.Copy(bytes, 0, writeBuffer, 1, bytes.Length);
          writeBuffer[0] = address |= RegisterAddressWriteMask;
 
-         rfm9XLoraModem.Write(writeBuffer);
+         rfm9XLoraModem.TransferFullDuplex(writeBuffer, readBuffer);
       }
 
       public void RegisterDump()
