@@ -23,7 +23,7 @@ namespace devMobile.IoT.Rfm9x
 
 	public sealed class RegisterManager
 	{
-		private SpiDevice rfm9XLoraModem;
+		private readonly SpiDevice rfm9XLoraModem;
 		private const byte RegisterAddressReadMask = 0X7f;
 		private const byte RegisterAddressWriteMask = 0x80;
 
@@ -86,35 +86,38 @@ namespace devMobile.IoT.Rfm9x
 		public void WriteByte(byte address, byte value)
 		{
 			byte[] writeBuffer = new byte[] { address |= RegisterAddressWriteMask, value };
+			byte[] readBuffer = new byte[writeBuffer.Length];
 			Debug.Assert(rfm9XLoraModem != null);
 
-			rfm9XLoraModem.Write(writeBuffer);
+			rfm9XLoraModem.TransferFullDuplex(writeBuffer, readBuffer);
 		}
 
 		public void WriteWord(byte address, ushort value)
 		{
 			byte[] valueBytes = BitConverter.GetBytes(value);
 			byte[] writeBuffer = new byte[] { address |= RegisterAddressWriteMask, valueBytes[0], valueBytes[1] };
+			byte[] readBuffer = new byte[writeBuffer.Length];
 			Debug.Assert(rfm9XLoraModem != null);
 
-			rfm9XLoraModem.Write(writeBuffer);
+			rfm9XLoraModem.TransferFullDuplex(writeBuffer, readBuffer);
 		}
 
 		public void Write(byte address, byte[] bytes)
 		{
 			byte[] writeBuffer = new byte[1 + bytes.Length];
+			byte[] readBuffer = new byte[writeBuffer.Length];
 			Debug.Assert(rfm9XLoraModem != null);
 
 			Array.Copy(bytes, 0, writeBuffer, 1, bytes.Length);
 			writeBuffer[0] = address |= RegisterAddressWriteMask;
 
-			rfm9XLoraModem.Write(writeBuffer);
+			rfm9XLoraModem.TransferFullDuplex(writeBuffer, readBuffer);
 		}
 
 		public void Dump(byte start, byte finish)
 		{
 			Debug.WriteLine("Register dump");
-			for (byte registerIndex = 0; registerIndex <= 0x42; registerIndex++)
+			for (byte registerIndex = start; registerIndex <= finish; registerIndex++)
 			{
 				byte registerValue = this.ReadByte(registerIndex);
 
