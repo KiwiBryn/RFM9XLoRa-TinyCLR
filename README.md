@@ -3,7 +3,7 @@ A C# library for [LoRa](https://lora-alliance.org/) connectivity for Semtech [SX
 
 The repo has the source code for the series of blog posts written as I built this library for TinyCLR V1, and then updated it to TinyCLR v2
 
-The V1 device [FEZ T18](https://docs.ghielectronics.com/hardware/duino/fez-t18.html) and an [Arduino](https://www.arduino.cc/) shield from [Dragino](http://www.dragino.com/products/lora/item/102-lora-shield.html)
+The V1 [FEZ T18](https://docs.ghielectronics.com/hardware/duino/fez-t18.html) device uses an [Arduino](https://www.arduino.cc/) shield from [Dragino](http://www.dragino.com/products/lora/item/102-lora-shield.html)
 ![LoRa Shield on FEZT18-N](DeviceV2.jpg)
 
 00. [Shield SPI](https://blog.devmobile.co.nz/2020/03/11/tinyclr-os-lora-library-part1/)
@@ -19,7 +19,7 @@ The V1 device [FEZ T18](https://docs.ghielectronics.com/hardware/duino/fez-t18.h
 * Rfm9xLoRaDeviceClient
 * Rfm9XLoRaDevice
 
-The V2 preview device [SC20100](https://www.ghielectronics.com/sitcore/dev/) uses an [Arduino](https://www.arduino.cc/) shield from [Dragino](http://www.dragino.com/products/lora/item/102-lora-shield.html) as I was unable to source a suitable MikroBus click.(April 2020)
+The V2 preview [SC20100](https://www.ghielectronics.com/sitcore/dev/) device uses an [Arduino](https://www.arduino.cc/) shield from [Dragino](http://www.dragino.com/products/lora/item/102-lora-shield.html) as I was unable to source a suitable MikroBus click.(April 2020)
 ![LoRa Shield on SC20100](SC20100DraginoTinyCLRV2.jpg)
 
 00. [ShieldSPI](https://blog.devmobile.co.nz/2020/04/26/tinyclr-os-v2-lora-library-part1/)
@@ -31,7 +31,7 @@ The V2 preview device [SC20100](https://www.ghielectronics.com/sitcore/dev/) use
 * Rfm9xLoRaDeviceClient 
 * Rfm9XLoRaDevice
 
-The V2 RC1 device uses an Fezduino(https://www.ghielectronics.com/sitcore/sbc/) and an [Arduino](https://www.arduino.cc/) shield from [Dragino](http://www.dragino.com/products/lora/item/102-lora-shield.html)
+The V2 RC1 [Fezduino](https://www.ghielectronics.com/sitcore/sbc/) device uses an [Arduino](https://www.arduino.cc/) shield from [Dragino](http://www.dragino.com/products/lora/item/102-lora-shield.html)
 ![LoRaShield on FezDuino](TinyCLRV2Fezduino.jpg)
 
 00. [The Basics](https://blog.devmobile.co.nz/2020/07/08/tinyclr-os-v2-rc1-lora-library-part1/)
