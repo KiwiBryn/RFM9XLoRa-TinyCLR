@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// Need one of TINYCLR_V2_SC20100DEV/TINYCLR_V2_FEZDUINO defined
+// Need one of TINYCLR_V2_SC20100DEV_MIKROBUS_1/TINYCLR_V2_SC20100DEV_MIKROBUS_2/TINYCLR_V2_FEZDUINO defined
 //---------------------------------------------------------------------------------
 namespace devMobile.IoT.Rfm9x.RegisterReadAndWrite
 {
@@ -142,8 +142,11 @@ namespace devMobile.IoT.Rfm9x.RegisterReadAndWrite
    {
       static void Main()
       {
-#if TINYCLR_V2_SC20100DEV
-         Rfm9XDevice rfm9XDevice = new Rfm9XDevice(SC20100.SpiBus.Spi3, SC20100.GpioPin.PA13, SC20100.GpioPin.PA14);
+#if TINYCLR_V2_SC20100DEV_MIKROBUS_1
+         Rfm9XDevice rfm9XDevice = new Rfm9XDevice(SC20100.SpiBus.Spi3, SC20100.GpioPin.PD3, SC20100.GpioPin.PD4);
+#endif
+#if TINYCLR_V2_SC20100DEV_MIKROBUS_2
+         Rfm9XDevice rfm9XDevice = new Rfm9XDevice(SC20100.SpiBus.Spi3, SC20100.GpioPin.PD14, SC20100.GpioPin.PD15);
 #endif
 #if TINYCLR_V2_FEZDUINO
          Rfm9XDevice rfm9XDevice = new Rfm9XDevice(SC20100.SpiBus.Spi6, SC20100.GpioPin.PB1, SC20100.GpioPin.PA15);
