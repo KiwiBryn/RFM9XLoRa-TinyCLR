@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// Need one of TINYCLR_V2_SC20100DEV_MIKROBUS_1/TINYCLR_V2_SC20100DEV_MIKROBUS_2/TINYCLR_V2_FEZDUINO defined
+// Need one of TINYCLR_V2_SC20100DEV_MIKROBUS_1/TINYCLR_V2_SC20100DEV_MIKROBUS_2/TINYCLR_V2_FEZDUINO/TINYCLR_V2_FEZPORTAL defined
 //---------------------------------------------------------------------------------
 namespace devMobile.IoT.Rfm9x.TransmitBasic
 {
@@ -149,6 +149,9 @@ namespace devMobile.IoT.Rfm9x.TransmitBasic
 #endif
 #if TINYCLR_V2_FEZDUINO
          Rfm9XDevice rfm9XDevice = new Rfm9XDevice(SC20100.SpiBus.Spi6, SC20100.GpioPin.PB1, SC20100.GpioPin.PA15);
+#endif
+#if TINYCLR_V2_FEZPORTAL
+         Rfm9XDevice rfm9XDevice = new Rfm9XDevice(SC20100.SpiBus.Spi3, SC20100.GpioPin.PC13, SC20100.GpioPin.PD4);
 #endif
          int SendCount = 0;
 

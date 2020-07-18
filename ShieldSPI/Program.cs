@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// Need one of TINYCLR_V1_FEZDUINO/TINYCLR_V2_SC20100DEV_MIKROBUS_1/TINYCLR_V2_SC20100DEV_MIKROBUS_2/TINYCLR_V2_FEZDUINO defined
+// Need one of TINYCLR_V1_FEZDUINO/TINYCLR_V2_SC20100DEV_MIKROBUS_1/TINYCLR_V2_SC20100DEV_MIKROBUS_2/TINYCLR_V2_FEZDUINO/TINYCLR_V2_FEZPORTAL defined
 //---------------------------------------------------------------------------------
 namespace devMobile.IoT.Rfm9x.ShieldSpi
 {
@@ -43,6 +43,9 @@ namespace devMobile.IoT.Rfm9x.ShieldSpi
 #if TINYCLR_V2_FEZDUINO
             ChipSelectLine = GHIElectronics.TinyCLR.Devices.Gpio.GpioController.GetDefault().OpenPin(GHIElectronics.TinyCLR.Pins.SC20100.GpioPin.PB1),
 #endif
+#if TINYCLR_V2_FEZPORTAL
+            ChipSelectLine = GHIElectronics.TinyCLR.Devices.Gpio.GpioController.GetDefault().OpenPin(GHIElectronics.TinyCLR.Pins.SC20100.GpioPin.PC13),
+#endif
             Mode = SpiMode.Mode0,
             //Mode = SpiMode.Mode1,
             //Mode = SpiMode.Mode2,
@@ -63,6 +66,9 @@ namespace devMobile.IoT.Rfm9x.ShieldSpi
 #endif
 #if TINYCLR_V2_FEZDUINO
          var controller = SpiController.FromName(SC20100.SpiBus.Spi6);
+#endif
+#if TINYCLR_V2_FEZPORTAL
+         var controller = SpiController.FromName(SC20100.SpiBus.Spi3);
 #endif
          var device = controller.GetDevice(settings);
 
