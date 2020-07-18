@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// Need one of TINYCLR_V2_SC20100DEV/TINYCLR_V2_FEZDUINO defined
+// Need one of TINYCLR_V2_SC20100DEV_MIKROBUS_1/TINYCLR_V2_SC20100DEV_MIKROBUS_2/TINYCLR_V2_FEZDUINO defined
 //---------------------------------------------------------------------------------
 namespace devMobile.IoT.Rfm9x.ReceiveInterrupt
 {
@@ -134,29 +134,32 @@ namespace devMobile.IoT.Rfm9x.ReceiveInterrupt
       public void RegisterWriteByte(byte address, byte value)
       {
          byte[] writeBuffer = new byte[] { address |= RegisterAddressWriteMask, value };
+         byte[] readBuffer = new byte[writeBuffer.Length];
          Debug.Assert(rfm9XLoraModem != null);
 
-         rfm9XLoraModem.Write(writeBuffer);
+         rfm9XLoraModem.TransferFullDuplex(writeBuffer, readBuffer);
       }
 
       public void RegisterWriteWord(byte address, ushort value)
       {
          byte[] valueBytes = BitConverter.GetBytes(value);
          byte[] writeBuffer = new byte[] { address |= RegisterAddressWriteMask, valueBytes[0], valueBytes[1] };
+         byte[] readBuffer = new byte[writeBuffer.Length];
          Debug.Assert(rfm9XLoraModem != null);
 
-         rfm9XLoraModem.Write(writeBuffer);
+         rfm9XLoraModem.TransferFullDuplex(writeBuffer, readBuffer);
       }
 
       public void RegisterWrite(byte address, byte[] bytes)
       {
          byte[] writeBuffer = new byte[1 + bytes.Length];
+         byte[] readBuffer = new byte[writeBuffer.Length];
          Debug.Assert(rfm9XLoraModem != null);
 
          Array.Copy(bytes, 0, writeBuffer, 1, bytes.Length);
          writeBuffer[0] = address |= RegisterAddressWriteMask;
 
-         rfm9XLoraModem.Write(writeBuffer);
+         rfm9XLoraModem.TransferFullDuplex(writeBuffer, readBuffer);
       }
 
       public void RegisterDump()
@@ -175,6 +178,12 @@ namespace devMobile.IoT.Rfm9x.ReceiveInterrupt
    {
       static void Main()
       {
+#if TINYCLR_V2_SC20100DEV_MIKROBUS_1
+         Rfm9XDevice rfm9XDevice = new Rfm9XDevice(SC20100.SpiBus.Spi3, SC20100.GpioPin.PD3, SC20100.GpioPin.PD4, SC20100.GpioPin.PC5);
+#endif
+#if TINYCLR_V2_SC20100DEV_MIKROBUS_2
+         Rfm9XDevice rfm9XDevice = new Rfm9XDevice(SC20100.SpiBus.Spi3, SC20100.GpioPin.PD14, SC20100.GpioPin.PD15, SC20100.GpioPin.PA8);
+#endif
 #if TINYCLR_V2_SC20100DEV
          Rfm9XDevice rfm9XDevice = new Rfm9XDevice(SC20100.SpiBus.Spi3, SC20100.GpioPin.PA13, SC20100.GpioPin.PA14, SC20100.GpioPin.PE4);
 #endif
