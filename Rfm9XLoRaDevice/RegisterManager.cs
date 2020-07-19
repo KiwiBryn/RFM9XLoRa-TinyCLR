@@ -38,6 +38,7 @@ namespace devMobile.IoT.Rfm9x
 				Mode = SpiMode.Mode0,
 				ClockFrequency = clockFrequency,
 				ChipSelectActiveState = false,
+				ChipSelectHoldTime = new TimeSpan(1),
 			};
 
 			SpiController spiController = SpiController.FromName(spiPortName);

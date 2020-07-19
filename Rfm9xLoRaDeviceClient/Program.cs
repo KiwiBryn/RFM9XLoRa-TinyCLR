@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// Need one of TINYCLR_V2_SC20100DEV/TINYCLR_V2_FEZDUINO defined
+// Need one of TINYCLR_V2_SC20100DEV_MIKROBUS_1/TINYCLR_V2_SC20100DEV_MIKROBUS_2/TINYCLR_V2_FEZDUINO defined
 //---------------------------------------------------------------------------------
 namespace devMobile.IoT.Rfm9x.LoRaDeviceClient
 {
@@ -30,7 +30,7 @@ namespace devMobile.IoT.Rfm9x.LoRaDeviceClient
    {
       static void Main()
       {
-#if TINYCLR_V2_SC20100DEV
+#if TINYCLR_V2_SC20100DEV_MIKROBUS_1 || TINYCLR_V2_SC20100DEV_MIKROBUS_2
 			const string DeviceName = "SC20100DEVLoRa";
 #endif
 #if TINYCLR_V2_FEZDUINO
@@ -41,11 +41,14 @@ namespace devMobile.IoT.Rfm9x.LoRaDeviceClient
 #endif
 			const double Frequency = 915000000.0;
 			byte MessageCount = System.Byte.MaxValue;
-#if TINYCLR_V2_SC20100DEV
-         Rfm9XDevice rfm9XDevice = new Rfm9XDevice(SC20100.SpiBus.Spi3, SC20100.GpioPin.PA13, SC20100.GpioPin.PA14, SC20100.GpioPin.PE4);
+#if TINYCLR_V2_SC20100DEV_MIKROBUS_1
+         Rfm9XDevice rfm9XDevice = new Rfm9XDevice(SC20100.SpiBus.Spi3, SC20100.GpioPin.PD3, SC20100.GpioPin.PD4, SC20100.GpioPin.PC5);
+#endif
+#if TINYCLR_V2_SC20100DEV_MIKROBUS_2
+			Rfm9XDevice rfm9XDevice = new Rfm9XDevice(SC20100.SpiBus.Spi3, SC20100.GpioPin.PD14, SC20100.GpioPin.PD15, SC20100.GpioPin.PA8);
 #endif
 #if TINYCLR_V2_FEZDUINO
-         Rfm9XDevice rfm9XDevice = new Rfm9XDevice(SC20100.SpiBus.Spi6, SC20100.GpioPin.PB1, SC20100.GpioPin.PA15, SC20100.GpioPin.PA1);
+			Rfm9XDevice rfm9XDevice = new Rfm9XDevice(SC20100.SpiBus.Spi6, SC20100.GpioPin.PB1, SC20100.GpioPin.PA15, SC20100.GpioPin.PA1);
 #endif
 			
 			rfm9XDevice.Initialise(Frequency, paBoost: true, rxPayloadCrcOn: true);
