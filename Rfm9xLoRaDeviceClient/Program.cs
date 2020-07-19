@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-// Need one of TINYCLR_V2_SC20100DEV_MIKROBUS_1/TINYCLR_V2_SC20100DEV_MIKROBUS_2/TINYCLR_V2_FEZDUINO defined
+// Need one of TINYCLR_V2_SC20100DEV_MIKROBUS_1/TINYCLR_V2_SC20100DEV_MIKROBUS_2/TINYCLR_V2_FEZDUINO/TINYCLR_V2_FEZPORTAL defined
 //---------------------------------------------------------------------------------
 namespace devMobile.IoT.Rfm9x.LoRaDeviceClient
 {
@@ -36,6 +36,9 @@ namespace devMobile.IoT.Rfm9x.LoRaDeviceClient
 #if TINYCLR_V2_FEZDUINO
 			const string DeviceName = "FezduinoLoRa";
 #endif
+#if TINYCLR_V2_FEZPORTAL
+			const string DeviceName = "FezportalLoRa";
+#endif
 #if ADDRESSED_MESSAGES_PAYLOAD
 			const string HostName = "LoRaIoT1";
 #endif
@@ -50,7 +53,10 @@ namespace devMobile.IoT.Rfm9x.LoRaDeviceClient
 #if TINYCLR_V2_FEZDUINO
 			Rfm9XDevice rfm9XDevice = new Rfm9XDevice(SC20100.SpiBus.Spi6, SC20100.GpioPin.PB1, SC20100.GpioPin.PA15, SC20100.GpioPin.PA1);
 #endif
-			
+#if TINYCLR_V2_FEZPORTAL
+         Rfm9XDevice rfm9XDevice = new Rfm9XDevice(SC20100.SpiBus.Spi3, SC20100.GpioPin.PC13, SC20100.GpioPin.PD4,SC20100.GpioPin.PC2);
+#endif
+
 			rfm9XDevice.Initialise(Frequency, paBoost: true, rxPayloadCrcOn: true);
 #if DEBUG
 			rfm9XDevice.RegisterDump();
